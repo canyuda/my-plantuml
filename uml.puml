@@ -1,0 +1,302 @@
+@startuml A
+Class01 <|-- Class02 : 泛化(继承)
+Class11 <|.. Class12 : 实现
+Class15 <.. Class16 : 依赖
+Class13 <-- Class14 : 关联
+Class03 *-->  Class04 : 组合
+Class05 o--> Class06 : 聚合
+@enduml
+
+@startuml B
+Class07 .. Class08
+Class09 -- Class10
+Class19 <--* Class20
+Class21 #-- Class22
+Class23 x-- Class24
+Class25 }-- Class26
+Class27 +-- Class28
+Class29 ^-- Class30
+@enduml
+
+@startuml 20190904-inheritance
+!include common.iuml
+namespace default{
+Class(Programmer, 程序员) {
+}
+abstract Class(Employee, 员工) {
+}
+Employee <|-- Programmer : 泛化(继承)
+}
+@enduml
+
+@startuml 20190904-implementation
+!include common.iuml
+namespace default{
+Class(Programmer, 程序员) {
+}
+Interface(Code, 编码技能) {
+}
+Code <|.. Programmer : 实现
+}
+@enduml
+
+@startuml 20190904-dependency
+!include common.iuml
+namespace default{
+Class(Programmer, 程序员) {
+    +code(Keyboard keyboard) : void
+}
+Class(Keyboard, 键盘) {
+}
+Keyboard <.. Programmer : 依赖
+}
+@enduml
+
+
+@startuml 20190904-association-composition-aggregation
+!include common.iuml
+
+namespace association{
+    Class(Student, 学生) {
+        -List<Course> courses
+    }
+    Class(Course, 课程) {
+        -List<Student> students(非必需包含本属性)
+    }
+    Student "n" --> "n" Course : 关联
+}
+namespace composition{
+    Class(Car, 汽车) {
+        -Engine engine
+        -List<Tyre> tyres
+    }
+    Class(Engine, 引擎) {
+    }
+    Class(Tyre, 轮胎) {
+    }
+    Car "1" *--> "1" Engine : 一对一组合
+    Car "1" *--> "n" Tyre : 一对多组合
+}
+namespace aggregation{
+    Class(Company, 公司) {
+        -List<Employee> employeies
+    }
+    Class(Employee, 员工) {
+    }
+    Company "1" o--> "n" Employee : 聚合
+}
+@enduml
+
+@startuml 20190904-mark-1
+class Car
+class Wheel
+class Person
+class Driver
+
+Driver - Car : drives >
+Car *- Wheel : have 4 >
+Car -- Person : < owns
+@enduml
+
+@startuml 20190904-mark-2
+
+class Dummy {
+ -field1
+ #field2
+ ~method1()
+ +method2()
+}
+
+@enduml
+
+@startuml 20190904-mark-3
+class Dummy {
+  {static} String id
+  {abstract} void methods()
+}
+@enduml
+
+@startuml 20190904-mark-4
+class Foo1 {
+  You can use
+  several lines
+  ..
+  as you want
+  and group
+  ==
+  things together.
+  __
+  You can have as many groups
+  as you want
+  --
+  End of class
+}
+
+class User {
+  .. Simple Getter ..
+  + getName()
+  + getAddress()
+  .. Some setter ..
+  + setName()
+  __ private data __
+  int age
+  -- encrypted --
+  String password
+}
+@enduml
+
+
+@startuml 20190904-mark-5
+class Object << general >>
+Object <|--- ArrayList
+
+note top of Object : In java, every class\nextends this one.
+
+note "This is a floating note" as N1
+note "This note is connected\nto several objects." as N2
+Object .. N2
+N2 .. ArrayList
+
+class Foo
+note left: On last defined class
+
+@enduml
+
+@startuml 20190904-mark-6
+
+note top of Object
+  <u>In java, class</u>
+  <b>extends</b>
+  <i>this one.</i> 
+end note
+
+note as N1
+  This note is <u>also</u>
+  <s>words lines</s>
+  And this is hosted by
+end note
+
+@enduml
+
+
+@startuml 20190904-uml-2
+
+class Client {
+
+}
+
+interface Adapter {
+    +operation()
+}
+
+class ConcreteAdapter {
+    -adapteee
+    +operation()
+}
+
+class Adaptee {
+    +adaptedOperation()
+}
+
+note "对象适配器模式" as N1
+
+Client -right-> Adapter
+Adapter <|-down- ConcreteAdapter
+Adaptee <-right- ConcreteAdapter
+N1 -right- ConcreteAdapter
+
+@enduml
+
+@startuml 20190904-uml-3
+
+class Client {
+
+}
+
+interface Adapter {
+    +operation()
+}
+
+class ConcreteAdapter {
+    +operation()
+}
+
+class Adaptee {
+    +adaptedOperation()
+}
+
+note "类适配器模式" as N1
+
+Client -right-> Adapter
+Adapter <|-down- ConcreteAdapter
+Adaptee <|-left- ConcreteAdapter
+N1 -right- ConcreteAdapter
+
+@enduml
+
+
+@startuml 20190904-uml-4
+!include common.iuml
+class Director {
+    -pbuilder : Builder *
+    +constuct() : Product*
+    +setBuilder(Builder*) : void
+}
+
+class Builder {
+    + builderPartA() : void
+    + builderPartB() : void
+    + builderPartC() : void
+    + getResult() : void
+}
+
+class ConcreteBuilder {
+    + builderPartA() : void
+    + builderPartB() : void
+    + builderPartC() : void
+}
+
+class Product {
+
+}
+
+note as N1
+pbuilder->builderPartA();
+pbuilder->builderPartB();
+pbuilder->builderPartC();
+pbuilder->getResult();
+end note
+
+Director o-right- Builder
+Director -- N1
+Builder <|.down. ConcreteBuilder
+ConcreteBuilder .right.> Product
+
+@enduml
+
+
+@startuml 20190904-uml-5
+!include common.iuml
+class Context {
+    -Strategy strategy
+    +doSomething() : void
+    +setStrategy(Strategy*) : void
+}
+
+interface Strategy {
+    +execute() : void
+}
+
+class StrategyA {
+    +execute() : void
+}
+
+class StrategyB {
+    +execute() : void
+}
+
+Context *-right- Strategy
+Strategy <-up- StrategyA
+Strategy <-up- StrategyB
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml factory-method-1
+!include common.iuml
+
+Class(Product,"产品") << abstract >>{
+    +use() : void
+}
+
+Class(ConcreteProductA,"产品A"){
+    +use() : void
+}
+
+Class(ConcreteProductB,"产品B"){
+    +use() : void
+}
+
+Class(Factory,"工厂") {
+    +{static} createProduct(String flag) : Product
+}
+
+note as N1
+public static Product createProduct(String flag){
+    if (flag == "A"){
+        return new ConcreteProductA();
+    } else if (flag == "B"){
+        return new ConcreteProductB();
+    }
+}
+end note
+
+Product <|.. ConcreteProductA
+Product <|.. ConcreteProductB
+ConcreteProductA <.. Factory
+ConcreteProductB <.. Factory
+N1 .left. Factory
+
+
+@enduml
