@@ -1,0 +1,245 @@
+@startuml activity-1
+:第一行;
+:第一行
+第 **二行加粗** 了;
+@enduml
+
+@startuml activity-2
+start
+:第一行;
+:第一行
+第 **二行加粗** 了;
+end
+
+start
+:第一行;
+:第一行
+第 **二行加粗** 了;
+stop
+@enduml
+
+@startuml activity-3
+start
+if (你好吗？) then (好)
+    :选择了好;
+else (不好)
+    :选择了__不好(带下划线)__;
+endif
+stop
+@enduml
+
+@startuml activity-4
+start
+if (你好吗？) then (好)
+    :选择了好;
+elseif (确认好吗?) then (确定好)
+    :选择了确定好;
+elseif (再次确认好吗?) then (确定确定好)
+    :选择了确定确定好;
+else (不好)
+    :不好;
+endif
+stop
+@enduml
+
+@startuml activity-5
+start
+repeat
+    :上班;
+    :回家;
+repeat while (挂了?) is (没有)
+stop
+@enduml
+
+@startuml activity-6
+start
+while (能动?)
+    :上班;
+    :回家;
+endwhile
+stop
+@enduml
+
+@startuml activity-7
+start
+while (能动?) is (能)
+    :上班;
+    :回家;
+endwhile (不能)
+    :挂了;
+stop
+@enduml
+
+@startuml activity-8
+start
+if (进入并行?) then (进入)
+  fork
+	:任务 1;
+  fork again
+	:任务 2;
+  end fork
+else (不进入)
+  :任务 1;
+  :任务 2;
+endif
+stop
+@enduml
+
+@startuml activity-9
+start
+:过程1;
+floating note left: 这是过程1的注释, 在左边, 没有箭头
+:过程2;
+note right
+  这是过程2的注释 在右边
+  //斜体字// 正常字
+  正常字 <b>HTML文字</b>
+  ====
+  * 小圆点 ""代码块"" 加分割线
+end note
+stop
+@enduml
+
+@startuml activity-10
+start
+:正常颜色;
+#HotPink:直接使用颜色名字[[https://www.w3schools.com/colors/colors_names.asp]];
+#HotPink|White:甚至是渐变色;
+#AAAAAA:使用 HEX 值;
+#555:使用 短 HEX 值;
+stop
+@enduml
+
+@startuml activity-11
+colors
+@enduml
+
+@startuml activity-12
+colors chocolate
+@enduml
+
+@startuml activity-13
+start
+:foo1;
+-> 指定箭头旁文字;
+if (test) then
+  -[#blue]-> 蓝色箭头;
+  :foo2;
+  -[#green,dashed]-> 绿色加粗虚线
+  文字可换行
+  **甚至可加粗**;
+  :foo3;
+else
+  -[#black,dotted]-> 黑色加细虚线
+  :foo4;
+endif
+-[#gray,bold]->
+:foo5;
+stop
+@enduml
+
+@startuml activity-14
+start
+partition 分组1 {
+	:上班;
+	:吃饭;
+}
+:回家;
+partition 分组2 {
+	:睡觉;
+	:玩;
+}
+stop
+@enduml
+
+@startuml activity-15
+|服务A|
+start
+:查库1;
+|#AntiqueWhite|服务B|
+:写表;
+:计算;
+|服务A|
+:查库2;
+|服务B|
+:上传;
+stop
+@enduml
+
+@startuml activity-16
+start
+if (你好吗？) then (好)
+    :选择了好;
+else (不好)
+    :这个分支没有下文;
+    detach
+endif
+:待结束;
+stop
+@enduml
+
+@startuml activity-17
+start
+: 过程1;
+: 过程2;
+split
+: 岔路1;
+split again
+: 岔路2;
+split again
+: 岔路3;
+split again
+: 岔路4;
+detach
+split again
+: 岔路5;
+stop
+end split;
+stop
+@enduml
+
+@startuml activity-18
+start
+:样式1;
+:样式2|
+:样式3<
+:样式4>
+:样式5]
+:样式6/
+:样式7} 
+stop
+@enduml
+
+@startuml activity-19
+start
+:ClickServlet.handleRequest();
+:new page;
+if (Page.onSecurityCheck) then (true)
+  :Page.onInit();
+  if (isForward?) then (no)
+	:Process controls;
+	if (continue processing?) then (no)
+	  stop
+	endif
+	
+	if (isPost?) then (yes)
+	  :Page.onPost();
+	else (no)
+	  :Page.onGet();
+	endif
+	:Page.onRender();
+  endif
+else (false)
+endif
+
+if (do redirect?) then (yes)
+  :redirect process;
+else
+  if (do forward?) then (yes)
+	:Forward request;
+  else (no)
+	:Render page template;
+  endif
+endif
+stop
+@enduml

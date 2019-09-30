@@ -1,0 +1,388 @@
+@startuml sequence-1
+服务A -> 服务B: 调用
+服务B --> 服务A: 返回
+
+服务A -> 服务B: 调用2
+服务B --> 服务A: 返回2
+@enduml
+
+@startuml sequence-2
+actor 小人 as Foo1
+boundary 边界 as Foo2
+control 控制 as Foo3
+entity 实体 as Foo4
+database 数据库 as Foo5
+collections 集合 as Foo6
+participant 方框 as Foo7
+
+Foo1 -> Foo2 : To boundary
+Foo1 -> Foo3 : To control
+Foo1 -> Foo4 : To entity
+Foo1 -> Foo5 : To database
+Foo1 -> Foo6 : To collections
+Foo1 -> Foo7 : To participant
+@enduml
+
+@startuml sequence-3
+actor 小人2 as Bob2 #red/green
+actor 小人1 as Bob1 #FFF/000
+participant Alice
+participant "I have a really\nlong name" as L #99FF99
+
+Alice->Bob1: 发送
+Bob1->Alice: 响应
+Alice->Alice: 自发自收
+Bob1->L: biubiu
+@enduml
+
+@startuml sequence-4
+participant Last order 30
+participant Middle order 20
+participant First order 10
+@enduml
+
+@startuml sequence-5
+Bob -> Alice
+Bob ->x Alice
+Bob ->> Alice
+Bob -\ Alice
+Bob -\\ Alice
+Bob --\\ Alice
+Bob ->o Alice
+Bob o\\-- Alice
+Bob <-> Alice
+Bob <->o Alice
+@enduml
+
+@startuml sequence-6
+Bob -[#red]> Alice : hello
+Alice -[#0000FF]->Bob : ok
+@enduml
+
+@startuml sequence-7
+autonumber
+Bob -> Alice : 请求
+Bob <- Alice : 响应
+
+autonumber 15
+Bob -> Alice : 请求
+Bob <- Alice : 响应
+
+autonumber stop
+Bob -> Alice : dummy
+
+autonumber 40 10 "<font color=red><b>Message 0  "
+Bob -> Alice : 请求
+Bob <- Alice : 响应
+
+autonumber resume 1 "<b>[0]"
+Bob -> Alice : 请求
+Bob <- Alice : 响应
+
+@enduml
+
+@startuml sequence-8
+
+header 图头
+footer 图尾 %page% of %lastpage%
+title 图标题
+
+服务A -> 服务B : 消息1
+服务B -> 服务A : 消息2
+
+newpage
+
+服务A -> 服务B : 消息3
+服务B -> 服务A : 消息4
+
+newpage A title for the\nlast page
+
+服务A -> 服务B : 消息5
+服务B -> 服务A : 消息6
+
+@enduml
+
+@startuml sequence-9
+Alice -> Bob: 请求
+
+alt 成功情况
+
+	Bob -> Alice: 成功的处理流程
+	
+else 失败情况
+
+	Bob -> Alice: 失败的处理流程
+	group 这是一个分组
+		Alice -> Log : 循环开始
+	    loop 循环 1000 times
+	        Alice -> Bob: 循环内容
+	    end
+		Alice -> Log : 循环结束
+	end
+	
+else 其他情况
+
+   Bob -> Alice: 非成功失败的处理流程
+   
+end
+@enduml
+
+@startuml sequence-10
+Alice->Bob : hello
+note left: 左边的日志
+
+Bob->Alice : ok
+note right: 右边的日志
+
+Bob->Bob : 块状日志
+note right
+	块内内容
+	直接就能换行
+end note
+@enduml
+
+@startuml sequence-11
+participant Alice
+participant Bob
+note left of Alice #aqua
+	花里胡哨的注释
+	指定这个注释在Alice左边
+end note
+ 
+note right of Alice: 指定这个注释在Alice右边
+
+note over Alice: 指定这个注释在Alice中间
+
+note over Alice, Bob #FFAAAA: 指定这个注释在Alice和Bob中间
+
+note over Bob, Alice
+	指定这个注释在Alice和Bob中间
+	支持块注释
+end note
+@enduml
+
+@startuml sequence-12
+caller -> server : 过程1
+hnote over caller : 菱形注释块
+caller <- server : 过程2
+rnote over server
+	四四方方的注释块
+endrnote
+@enduml
+
+
+@startuml sequence-13
+Alice -> Bob : hello --there--
+... 省略 ~~内容~~ 用来表示延迟 ...
+Bob -> Alice : ok
+note left
+  This is **bold**
+  This is //italics//
+  This is ""monospaced""
+  This is --stroked--
+  This is __underlined__
+  This is ~~waved~~
+end note
+== 各种牛逼的样式 ==
+note right of Bob 
+ This is <back:cadetblue><size:18>displayed</size></back> 
+ __left of__ Alice. 
+end note
+
+note right of Bob 
+ <u:red>This</u> is <color #118888>displayed</color> 
+ **<color purple>left of</color> <s:red>Alice</strike> Bob**. 
+end note
+
+note right of Bob 
+ <w:#FF33FF>This is hosted</w> by <img img/logo_v2.png>
+end note 
+
+note right of Bob 
+  Example of simple table
+  |= |= table |= header |
+  | a | tabletabletabletable | row |
+  | b | table | row |
+end note 
+
+note right of Bob 
+:Here is the result
+|= |= table |= header |
+| a | table | row |
+|<#FF8080> red |<#80FF80> green |<#8080FF> blue |
+<#yellow>| b | table | row |;
+end note 
+
+note right of Bob 
+  Example of Tree
+	  |_ First line
+	  |_ **Bom(Model)**
+		|_ prop1
+		|_ prop2
+		|_ prop3
+end note 
+
+note right of Bob 
+  * Bullet list
+  * Second item
+  ** Sub item
+end note 
+
+note right of Bob 
+<&phone> <&wifi> <&map> 等...
+end note 
+
+== 引用类型(类似于注释) ==
+
+|||
+
+ref over Alice, Bob : ref不支持 left/right
+
+||100||
+
+ref over Bob
+ref仅支持 **over**
+<&phone> <&wifi> <&map> 等...
+end ref
+
+@enduml
+
+@startuml sequence-14
+listopeniconic
+@enduml
+
+@startuml sequence-15
+participant User
+
+User -> A: 下面启动A的生命线
+activate A
+
+A -> B: 下面启动B的生命线
+activate B #BBBBBB
+
+B -> C: 下面启动C的生命线
+activate C #DarkSalmon
+C --> B: 下面**销毁**C的生命线
+destroy C
+activate B #BBBBFF
+
+B --> C: 启动B的二段生命线
+activate C #DarkSalmon
+C --> B: 启动B的二段生命线
+destroy C
+destroy B
+
+B --> A: 下面关闭B的生命线
+deactivate B 
+
+A -> User: 下面**销毁**A的生命线
+destroy A
+@enduml
+
+
+@startuml sequence-16
+Bob -> Alice : hello
+
+create Other
+Alice -> Other : new
+Other --> Alice : return
+
+create control String
+Alice -> String
+String -> Alice
+
+Alice --> Bob : ok
+@enduml
+
+
+@startuml sequence-17
+[-> Bob : 未知来源的输入
+Bob -> Alice : 1
+Alice ->] : 未知去向的输出
+Alice <-]  : 未知来源的返回
+Bob <- Alice : 2
+[<- Bob  : 未知来源的返回
+@enduml
+
+@startuml sequence-18
+title __下划线__ **黑体** --删除线--
+
+Alice -> Bob: Authentication Request
+Bob -> Alice: Authentication Response
+
+@enduml
+
+
+
+@startuml sequence-19
+
+title 
+Here is the result
+|= |= table |= header |
+| a | table | row |
+|<#FF8080> red |<#80FF80> green |<#8080FF> blue |
+|<#yellow> | b | table | row |
+end title
+
+Alice -> Bob: Authentication Request
+Bob -> Alice: Authentication Response
+@enduml
+
+@startuml sequence-20
+box "标题" #LightBlue
+participant Bob
+participant Alice
+end box
+participant Other
+
+Bob -> Alice : hello
+Alice -> Other : hello
+@enduml
+
+@startuml sequence-21
+hide footbox
+title 脚移除
+
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+@enduml
+
+@startuml sequence-22
+
+skinparam backgroundColor #A9DCDF
+skinparam handwritten true
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+
+skinparam sequence {
+	ArrowColor DeepSkyBlue
+	ActorBorderColor DeepSkyBlue
+	LifeLineBorderColor blue
+	LifeLineBackgroundColor #A9DCDF
+	
+	ParticipantBorderColor DeepSkyBlue
+	ParticipantBackgroundColor DodgerBlue
+	ParticipantFontName Impact
+	ParticipantFontSize 17
+	ParticipantFontColor #A9DCDF
+	
+	ActorBackgroundColor aqua
+	ActorFontColor DeepSkyBlue
+	ActorFontSize 17
+	ActorFontName Aapex
+}
+
+box "标题"
+participant Bob
+participant Alice
+end box
+participant Other
+
+Bob -> Alice : hello
+Alice -> Other : hello
+
+note right of Other 
+自定义样式请看:__http://plantuml.com/zh/skinparam__
+end note 
+
+@enduml
