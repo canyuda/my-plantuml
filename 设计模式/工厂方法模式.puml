@@ -1,0 +1,44 @@
+@startuml factory-method-1
+!include ./common.iuml
+
+Class(Product,"抽象产品") << abstract >> {
+    + use() : void
+}
+
+Class(ConcreteProduct,"具体产品") {
+    + use() : void
+}
+
+Class(Factory,"抽象工厂") << abstract >> {
+    + factoryMethod() : Product
+}
+
+Class(ConcreteFactory,"具体工厂") {
+    + factoryMethod() : Product
+}
+
+
+note as N1
+return new ConcreteProduct();
+end note
+
+Product <|.. ConcreteProduct
+ConcreteProduct <.left. ConcreteFactory
+Factory <|.. ConcreteFactory
+ConcreteFactory -right- N1
+
+@enduml
+
+@startuml factory-method-2
+
+actor iMain
+participant ConcreteFactory
+participant ConcreteProduct
+
+activate iMain
+iMain -> ConcreteFactory : 1.0 factoryMethod():Product
+activate ConcreteFactory
+ConcreteFactory --> ConcreteProduct : 1.1 <<create>>
+iMain -> ConcreteProduct : 1.2 use()
+
+@enduml
