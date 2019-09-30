@@ -1,5 +1,5 @@
 @startuml factory-method-1
-!include ./common.iuml
+!include ./common.cuml
 
 Class(Product,"抽象产品") << abstract >> {
     + use() : void

@@ -1,5 +1,5 @@
 @startuml simple-factory-1
-!include common.iuml
+!include common.cuml
 
 Class(Product,"产品") << abstract >>{
     +use() : void

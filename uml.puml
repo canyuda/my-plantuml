@@ -19,7 +19,7 @@ Class29 ^-- Class30
 @enduml
 
 @startuml 20190904-inheritance
-!include common.iuml
+!include common.cuml
 namespace default{
 Class(Programmer, 程序员) {
 }
@@ -30,7 +30,7 @@ Employee <|-- Programmer : 泛化(继承)
 @enduml
 
 @startuml 20190904-implementation
-!include common.iuml
+!include common.cuml
 namespace default{
 Class(Programmer, 程序员) {
 }
@@ -41,7 +41,7 @@ Code <|.. Programmer : 实现
 @enduml
 
 @startuml 20190904-dependency
-!include common.iuml
+!include common.cuml
 namespace default{
 Class(Programmer, 程序员) {
     +code(Keyboard keyboard) : void
@@ -54,7 +54,7 @@ Keyboard <.. Programmer : 依赖
 
 
 @startuml 20190904-association-composition-aggregation
-!include common.iuml
+!include common.cuml
 
 namespace association{
     Class(Student, 学生) {
@@ -236,7 +236,7 @@ N1 -right- ConcreteAdapter
 
 
 @startuml 20190904-uml-4
-!include common.iuml
+!include common.cuml
 class Director {
     -pbuilder : Builder *
     +constuct() : Product*
@@ -276,7 +276,7 @@ ConcreteBuilder .right.> Product
 
 
 @startuml 20190904-uml-5
-!include common.iuml
+!include common.cuml
 class Context {
     -Strategy strategy
     +doSomething() : void
