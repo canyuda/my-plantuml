@@ -25,7 +25,7 @@ Foo1 -> Foo7 : To participant
 
 @startuml sequence-3
 actor 小人2 as Bob2 #red/green
-actor 小人1 as Bob1 #FFF/000
+actor 小人1 as Bob1 #FFF\000
 participant Alice
 participant "I have a really\nlong name" as L #99FF99
 

@@ -1,0 +1,70 @@
+@startuml activity-1
+robust "Web 浏览器" as WB
+concise "Web 用户" as WU
+
+@0
+WU is 空闲
+WB is 空闲
+
+@100
+WU is 等待中
+WB is 处理中
+
+@300
+WB is 等待中
+@enduml
+
+@startdot
+digraph foo {
+  node [style=rounded]
+  node1 [shape=box]
+  node2 [fillcolor=yellow, style="rounded,filled", shape=diamond]
+  node3 [shape=record, label="{ a | b | c }"]
+
+  node1 -> node2 -> node3
+}
+@enddot
+
+@startuml
+ditaa(--no-shadows, scale=0.8)
+/--------\   +-------+
+|cAAA    +---+Version|
+|  Data  |   |   V3  |
+|  Base  |   |cRED{d}|
+|     {s}|   +-------+
+\---+----/
+@enduml
+
+@startditaa
++--------+   +-------+    +-------+
+|        +---+ ditaa +--> |       |
+|  Text  |   +-------+    |diagram|
+|Document|   |!magic!|    |       |
+|     {d}|   |       |    |       |
++---+----+   +-------+    +-------+
+	:                         ^
+	|       Lots of work      |
+	+-------------------------+
+@endditaa
+
+@startgantt
+[Prototype design] lasts 15 days
+[Test prototype] lasts 10 days
+@endgantt
+
+@startgantt
+[Prototype design] lasts 15 days
+[Test prototype] lasts 10 days
+[Test prototype] starts at [Prototype design]'s end
+@endgantt
+
+@startuml
+:<math>int_0^1f(x)dx</math>;
+:<math>x^2+y_1+z_12^34</math>;
+note right
+Try also
+<math>d/dxf(x)=lim_(h->0)(f(x+h)-f(x))/h</math>
+<latex>P(y|\mathbf{x}) \mbox{ or } f(\mathbf{x})+\epsilon</latex>
+end note
+@enduml
+

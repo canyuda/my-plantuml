@@ -1,0 +1,130 @@
+
+用例与角色
+
+@startuml usecase-1
+(用例A) << 构造器 >>
+(用例B) as (CB)  << 构造器 >>
+usecase 用例C
+usecase (用\n例\nD) as D
+
+:角色1: << 构造器 >>
+:角\n色\n2: as 2
+actor 角色3
+actor :角色4: as 4 << 构造器 >>
+@enduml
+
+用例的说明描述
+
+@startuml usecase-2
+usecase 用例A as "这是用例的描述
+--
+横线
+==
+双横线
+..虚线..
+描述文字"
+@enduml
+
+箭头使用
+
+@startuml usecase-3
+普通用户 -> (普通功能)
+普通用户 --> (高级功能) : 操作
+
+:管理员: ---> (高级功能) : 管理
+
+普通用户 <|-- 管理员 : 继承
+普通功能 <|-- 高级功能  : 继承
+@enduml
+
+注释
+
+@startuml usecase-4
+
+普通用户 -> (普通功能)
+普通用户 --> (高级功能) : 操作
+
+:管理员: ---> (高级功能) : 管理
+
+note left of 普通用户 : 普通注释
+
+note right of 管理员
+注释内容
+end note
+
+note "注释内容\n换行" as Note
+
+普通用户 .. Note
+Note .. 管理员
+
+@enduml
+
+箭头方向
+
+@startuml usecase-5
+:user: -left-> (左边) 
+:user: -right-> (右边) 
+:user: -up-> (上边)
+:user: -down-> (下边)
+
+右边 -> (1)
+右边 --> (2)
+右边 ---> (3)
+右边 ----> (4)
+
+@enduml
+
+
+@startuml usecase-6-1
+top to bottom direction
+user1 --> (Usecase 1)
+user2 --> (Usecase 2)
+@enduml
+
+@startuml usecase-6-2
+left to right direction
+user1 --> (Usecase 1)
+user2 --> (Usecase 2)
+@enduml
+
+
+@startuml usecase-7
+skinparam handwritten true
+
+skinparam usecase {
+	BackgroundColor DarkSeaGreen
+	BorderColor DarkSlateGray
+
+	BackgroundColor<< Main >> YellowGreen
+	BorderColor<< Main >> YellowGreen
+	
+	ArrowColor Olive
+	ActorBorderColor black
+	ActorFontName Courier
+
+	ActorBackgroundColor<< Human >> Gold
+}
+
+User << Human >>
+:Main Database: as MySql << Application >>
+(Start) << One Shot >>
+(Use the application) as (Use) << Main >>
+
+User -> (Start)
+User --> (Use)
+
+MySql --> (Use)
+@enduml
+
+@startuml usecase-8
+left to right direction
+skinparam packageStyle rectangle
+actor customer
+actor clerk
+rectangle checkout {
+  customer -- (checkout)
+  (checkout) .> (payment) : include
+  (help) .> (checkout) : extends
+  (checkout) -- clerk
+}
+@enduml

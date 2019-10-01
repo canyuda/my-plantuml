@@ -1,0 +1,110 @@
+@startuml state-1
+hide empty description
+[*] --> 状态1
+状态1 --> [*]
+状态1 : this is a string
+状态1 : this is another string
+
+状态1 -> 状态2
+状态2 --> [*]
+@enduml
+
+
+
+合成状态
+
+@startuml state-2
+hide empty description
+[*] --> 未指派
+
+state 未指派 {
+    [*] --> 未写入
+    未写入 --> 已写入 : 接口调用
+    已写入 --> 未写入 : 响应
+}
+
+state 已写入 {
+    [*] --> 未处理
+    未处理 --> 处理成功
+    处理成功 --> [*]
+    未处理 --> 处理失败
+    处理失败 --> [*]
+    state 处理失败 {
+        [*] --> 未接通
+        [*] --> 已接通未同意
+        未接通 --> [*]
+        已接通未同意 --> [*]
+    }
+}
+未指派 --> [*]
+已写入 -> [*]
+@enduml
+
+
+@startuml state-3
+hide empty description
+[*] --> Active
+
+state Active {
+  [*] -> NumLockOff
+  NumLockOff --> NumLockOn : EvNumLockPressed
+  NumLockOn --> NumLockOff : EvNumLockPressed
+  --
+  [*] -> CapsLockOff
+  CapsLockOff --> CapsLockOn : EvCapsLockPressed
+  CapsLockOn --> CapsLockOff : EvCapsLockPressed
+  --
+  [*] -> ScrollLockOff
+  ScrollLockOff --> ScrollLockOn : EvCapsLockPressed
+  ScrollLockOn --> ScrollLockOff : EvCapsLockPressed
+}
+@enduml
+
+
+@startuml state-4
+hide empty description
+[*] -up-> First : 向上
+First -right-> Second : 向右
+Second -down-> Third : 向下
+Third -left-> Last : 向左
+Last -down-> [*] : 结束
+@enduml
+
+@startuml state-5
+hide empty description
+[*] --> Active
+Active --> Inactive
+
+note left of Active : 旁侧注释
+
+note right of Inactive
+  块
+  注
+  释
+end note
+note "无箭头注释" as N1
+@enduml
+
+@startuml state-6
+skinparam backgroundColor LightYellow
+skinparam state {
+  StartColor MediumBlue
+  EndColor Red
+  BackgroundColor Peru
+  BackgroundColor<<Warning>> Olive
+  BorderColor Gray
+  FontName Impact
+}
+
+[*] --> NotShooting
+
+state "Not Shooting State" as NotShooting {
+  state "Idle mode" as Idle <<Warning>>
+  state "Configuring mode" as Configuring
+  [*] --> Idle
+  Idle --> Configuring : EvConfig
+  Configuring --> Idle : EvConfig
+}
+
+NotShooting --> [*]
+@enduml
