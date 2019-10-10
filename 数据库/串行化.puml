@@ -1,0 +1,28 @@
+@startuml SERIALIZABLE
+
+box #LightBlue
+participant 事务A as A
+database 数据库 as DB
+participant 事务B as B
+end box
+
+note over of DB : 准备工作:\n-- 设置锁超时时长\nSET innodb_lock_wait_timeout = 100;\nSHOW VARIABLES LIKE 'innodb_lock_wait_timeout';\n-- 修改隔离级别-串行化\nSET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE\nSELECT @@TX_ISOLATION;
+A -> DB : 准备工作 
+B -> DB : 准备工作
+== 并行转串行 ==
+A -> DB : BEGIN 
+activate A
+B -> DB : BEGIN 
+activate B
+A -> DB : SELECT * FROM t_student_score WHERE id = 1;
+DB --> A : 返回1条记录
+B -> DB : UPDATE t_student_score SET score = 99 WHERE id = 1;\n有人在用呢,你等等
+activate B #Black
+A -> DB : COMMIT
+deactivate A
+DB --> B : 更新成功一条记录\n别人搞完了,你可以改了
+deactivate B
+B -> DB : COMMIT
+deactivate B
+
+@enduml

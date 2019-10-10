@@ -1,0 +1,105 @@
+@startuml REPEATABLE-READ
+
+header READ COMMITTED
+footer 图尾 %page% of %lastpage%
+title : REPEATABLE READ-1
+
+box #LightBlue
+participant 事务A as A
+database 数据库 as DB
+participant 事务B as B
+end box
+collections 其他业务A as O
+collections 其他业务B as O2
+actor 用户 as U
+
+note over of DB : 准备工作:\n-- 设置锁超时时长\nSET innodb_lock_wait_timeout = 100;\nSHOW VARIABLES LIKE 'innodb_lock_wait_timeout';\n-- 修改隔离级别-重复读\nSET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;\nSELECT @@TX_ISOLATION;
+A -> DB : 准备工作 
+B -> DB : 准备工作
+== 解决不可重复读问题 ==
+
+A -> DB : BEGIN 
+activate A
+B -> DB : BEGIN 
+activate B
+A -> DB : SELECT score FROM t_student_score WHERE id = 1;
+DB --> A : 返回分数 : 1
+A -> DB : UPDATE t_student_score SET score = score + 10 WHERE id = 1;
+DB --> A : 修改成功
+B -> DB : 第一次读\nSELECT score FROM t_student_score WHERE id = 1;
+DB -[#green]-> B : 返回分数 : 1
+B -[#green]> O : 把分数(1) 提交给其他业务A
+A -> DB : COMMIT
+deactivate A
+B -> DB : 第二次读\nSELECT score FROM t_student_score WHERE id = 1;
+DB -[#green]-> B : 返回分数 : 1
+B -[#green]> O2 : 把分数(1) 提交给其他业务B
+B -> DB : COMMIT
+deactivate B
+......
+...After a long time...
+......
+U -> O : 从其他业务A看看成绩
+U <-[#green]- O : 返回分数(1)
+U -> O2 : 从其他业务B看看成绩
+U <-[#green]- O2 : 返回分数(1)
+U -> U : 两个地方的数据一致的
+
+newpage REPEATABLE READ-2
+== 引发幻读问题 ==
+note over of DB : 由于MySQL用间隙锁屏蔽了幻读现象, \n这里更改隔离级别为READ UNCOMMITTED 来演示效果\n\n模拟场景: 事务A, 根据某条件查询到一些数据, \n此时事务B在这些条件的范围内增加一条数据, 并提交, \n事务A用相同的条件更新这些数据, 发现查询出的条数小于更新的条数
+A -> DB : BEGIN 
+activate A
+B -> DB : BEGIN 
+activate B
+A -> DB : SELECT * FROM t_student_score WHERE course_id = 1;
+DB --> A : 返回列表: 4条记录
+A -->  O: 告诉其他业务A, 符合条件的有4条记录
+B -[#blue]> DB : INSERT INTO t_student_score (NAME,score,course_id) VALUES('小F', 10 ,1);
+DB -[#blue]-> B : 成功添加一条记录
+B -> DB : COMMIT
+deactivate B
+A -> DB : UPDATE t_student_score set score = score + 1 WHERE course_id = 1;
+DB --> A : 成功更新5条记录
+A -->  O2: 告诉其他业务B, 刚刚更新了5条记录
+A -> DB : COMMIT
+deactivate A
+......
+...After a long time...
+......
+U -> O : 从其他业务A看有几个被查出来
+U <-[#blue]- O : 返回4个
+U -> O2 : 从其他业务B看有几个被更新
+U <-[#blue]- O2 : 返回5个
+U -> U : 为什么查出来4个, 却更新了5个
+
+newpage REPEATABLE READ-3
+== MySQL利用间隙锁解决幻读问题 ==
+note over of DB : 模拟场景: 事务A, 根据某条件查询到一些数据, \n此时事务B在这些条件的范围内增加一条数据, 此时将被间隙锁锁住, 无法提交, \n事务A用相同的条件更新这些数据, 事务A提交, 此时事务B才能往下执行, \n事务B成功添加一条记录, 然后提交, 刚提交的记录的值不会被事务A影响.
+A -> DB : BEGIN 
+activate A
+B -> DB : BEGIN 
+activate B
+A -> DB : SELECT * FROM t_student_score WHERE course_id = 1;
+DB --> A : 返回列表: 4条记录
+A -->  O: 告诉其他业务A, 符合条件的有4条记录
+B -[#green]> DB : INSERT INTO t_student_score (NAME,score,course_id) VALUES('小F', 10 ,1);\n将被阻塞直到事务A提交
+activate B #Black
+A -> DB : UPDATE t_student_score set score = score + 1 WHERE course_id = 1;
+DB --> A : 成功更新4条记录
+A -->  O2: 告诉其他业务B, 刚刚更新了4条记录
+A -> DB : COMMIT
+deactivate A
+DB -[#green]-> B : 事务A释放锁,事务B阻塞解除\n成功添加一条记录
+deactivate B
+B -> DB : COMMIT
+deactivate B
+......
+...After a long time...
+......
+U -> O : 从其他业务A看有几个被查出来
+U <-[#green]- O : 返回4个
+U -> O2 : 从其他业务B看有几个被更新
+U <-[#green]- O2 : 返回4个
+U -> U : 数量对上了, 美滋滋
+@enduml
