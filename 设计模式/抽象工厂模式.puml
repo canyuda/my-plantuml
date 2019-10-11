@@ -1,0 +1,142 @@
+@startuml abstract-factory-1
+!include ./common.cuml
+
+Class(AbstractFactory,"抽象工厂") << abstract >> {
+    + createAbstractProduct1() : AbstractProduct1
+    + createAbstractProduct2() : AbstractProduct2
+    + createAbstractProductN() : AbstractProductN
+}
+
+Class(AbstractProduct1,"抽象产品1") << abstract >> {
+    + use1() : void
+}
+
+Class(AbstractProduct2,"抽象产品2") << abstract >> {
+    + use2() : void
+}
+
+Class(AbstractProductN,"抽象产品N") << abstract >> {
+    + useN() : void
+}
+
+Class(ConcreteProduct1_1,"具体产品1-1") {
+    + use1() : void
+}
+
+Class(ConcreteProduct1_2,"具体产品1-2") {
+    + use1() : void
+}
+
+Class(ConcreteProduct2_1,"具体产品2-1") {
+    + use2() : void
+}
+
+Class(ConcreteProduct2_2,"具体产品2-2") {
+    + use2() : void
+}
+
+Class(ConcreteProductN_1,"具体产品N-1") {
+    + useN() : void
+}
+
+Class(ConcreteProductN_2,"具体产品N-2") {
+    + useN() : void
+}
+
+Class(ConcreteFactory1,"具体工厂1") {
+    + createAbstractProduct1() : AbstractProduct1
+    + createAbstractProduct2() : AbstractProduct2
+    + createAbstractProductN() : AbstractProductN
+}
+
+Class(ConcreteFactory2,"具体工厂1") {
+    + createAbstractProduct1() : AbstractProduct1
+    + createAbstractProduct2() : AbstractProduct2
+    + createAbstractProductN() : AbstractProductN
+}
+
+AbstractFactory <|..left.. ConcreteFactory1
+AbstractFactory <|..right.. ConcreteFactory2
+
+ConcreteFactory1 .down.> ConcreteProduct1_1
+ConcreteFactory1 .down.> ConcreteProduct2_1
+ConcreteFactory1 .down.> ConcreteProductN_1
+
+ConcreteFactory2 .down.> ConcreteProduct1_2
+ConcreteFactory2 .down.> ConcreteProduct2_2
+ConcreteFactory2 .down.> ConcreteProductN_2
+
+AbstractProduct1 <|.up.. ConcreteProduct1_1
+AbstractProduct1 <|.up.. ConcreteProduct1_2
+AbstractProduct2 <|.up.. ConcreteProduct2_1
+AbstractProduct2 <|.up.. ConcreteProduct2_2
+AbstractProductN <|.up.. ConcreteProductN_1
+AbstractProductN <|.up.. ConcreteProductN_2
+
+@enduml
+
+
+@startuml abstract-factory-2
+
+actor 用户 as U
+entity 客户端 as C
+participant 工厂A as A
+
+U -> C : 切换主题A
+activate C
+C -> A : createAButton(给我一个A主题按钮)
+activate C #BBBBBB
+create A主题按钮 as AB
+A -->> AB : 创建
+C <-- A : 给你一个A主题按钮
+C -> AB : 渲染A主题按钮(use)
+deactivate C
+
+C -> A : createAInput(给我一个A主题输入框)
+activate C #Blue
+create A主题输入框 as AI
+A -->> AI : 创建
+C <-- A : 给你一个A主题输入框
+C -> AI : 渲染A主题输入框(use)
+deactivate C
+
+C -> A : createATable(给我一个A主题表格)
+activate C #DarkSalmon
+create A主题表格 as AT
+A -->> AT : 创建
+C <-- A : 给你一个A主题表格
+C -> AT : 渲染A主题表格(use)
+deactivate C
+C --> U : 展示给用户看A主题
+
+==用户觉得A主题不好看==
+
+participant 工厂B as B
+C <- U : 切换主题B
+activate C
+C -> B : createBButton(给我一个B主题按钮)
+activate C #BBBBBB
+create B主题按钮 as BB
+B -->> BB : 创建
+C <-- B : 给你一个B主题按钮
+C -> BB : 渲染B主题按钮(use)
+deactivate C
+
+C -> B : createBInput(给我一个B主题输入框)
+activate C #Blue
+create B主题输入框 as BI
+B -->> BI : 创建
+C <-- B : 给你一个B主题输入框
+C -> BI : 渲染B主题输入框(use)
+deactivate C
+
+C -> B : createBTable(给我一个B主题表格)
+activate C #DarkSalmon
+create B主题表格 as BT
+B -->> BT : 创建
+C <-- B : 给你一个B主题表格
+C -> BT : 渲染B主题表格(use)
+deactivate C
+C --> U : 展示给用户看B主题
+
+@enduml
