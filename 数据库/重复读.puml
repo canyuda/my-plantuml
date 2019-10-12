@@ -52,9 +52,9 @@ A -> DB : BEGIN
 activate A
 B -> DB : BEGIN 
 activate B
-A -> DB : SELECT * FROM t_student_score WHERE course_id = 1;
-DB --> A : 返回列表: 4条记录
-A -->  O: 告诉其他业务A, 符合条件的有4条记录
+A -> DB : UPDATE t_student_score set score = score - 1 WHERE course_id = 1;
+DB --> A : 成功更新4条记录
+A -->  O: 告诉其他业务B, 刚刚更新了4条记录
 B -[#blue]> DB : INSERT INTO t_student_score (NAME,score,course_id) VALUES('小F', 10 ,1);
 DB -[#blue]-> B : 成功添加一条记录
 B -> DB : COMMIT
@@ -67,7 +67,7 @@ deactivate A
 ......
 ...After a long time...
 ......
-U -> O : 从其他业务A看有几个被查出来
+U -> O : 从其他业务A看有几个被更新
 U <-[#blue]- O : 返回4个
 U -> O2 : 从其他业务B看有几个被更新
 U <-[#blue]- O2 : 返回5个
@@ -80,9 +80,9 @@ A -> DB : BEGIN
 activate A
 B -> DB : BEGIN 
 activate B
-A -> DB : SELECT * FROM t_student_score WHERE course_id = 1;
-DB --> A : 返回列表: 4条记录
-A -->  O: 告诉其他业务A, 符合条件的有4条记录
+A -> DB : UPDATE t_student_score set score = score - 1 WHERE course_id = 1;
+DB --> A : 成功更新4条记录
+A -->  O: 告诉其他业务B, 刚刚更新了4条记录
 B -[#green]> DB : INSERT INTO t_student_score (NAME,score,course_id) VALUES('小F', 10 ,1);\n将被阻塞直到事务A提交
 activate B #Black
 A -> DB : UPDATE t_student_score set score = score + 1 WHERE course_id = 1;
@@ -97,7 +97,7 @@ deactivate B
 ......
 ...After a long time...
 ......
-U -> O : 从其他业务A看有几个被查出来
+U -> O : 从其他业务A看有几个被更新
 U <-[#green]- O : 返回4个
 U -> O2 : 从其他业务B看有几个被更新
 U <-[#green]- O2 : 返回4个
