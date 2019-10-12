@@ -1,0 +1,51 @@
+@startuml builder-1
+!include common.cuml
+
+
+Class(Product,"产品") {
+}
+
+Interface(Builder,"抽象建造者") {
+    + setPart1() : void
+    + setPart2() : void
+    + setPart3() : void
+    + getResult() : void
+}
+
+Class(ConcreteBuilder,"具体建造者") {
+    + setPart1() : void
+    + setPart2() : void
+    + setPart3() : void
+    + getResult() : void
+}
+
+Class(Director,"指挥者") {
+    - builder : Builder
+    + setBuilder() : void
+    + buildProduct() : Product
+}
+
+Director o-right- Builder
+Builder <|... ConcreteBuilder
+ConcreteBuilder .up.> Product
+
+@enduml
+
+@startuml builder-2
+
+actor 用户 as U
+participant Director as D
+participant ConcreteBuilder as C
+
+U --> C : <<create>> 我要用这个创建产品
+U -> D : setBuilder(builder)
+U -> D : buildProduct() : Product
+activate D
+D -> C : setPart1()
+D -> C : setPart2()
+D -> C : setPart3()
+D -> C : getResult()
+D -> U : 收到ConcreteBuilder创建的Product
+deactivate D
+
+@enduml
