@@ -1,0 +1,52 @@
+@startuml sigleton-1
+!include ./common.cuml
+
+Class(Singleton,"单例类") {
+    - instance : Singleton
+    + getInstance() : Singleton
+    + singletonOperation() : void
+    - Singleton() : void
+}
+
+note AS A
+if (instance == NULL) 
+    instance = new Singleton();
+return instance;
+end note
+
+A .left. Singleton
+
+@enduml
+
+
+@startuml sigleton-2
+
+actor 用户 as U
+participant Singletion as S
+
+U -> S : getInstance() : Singleton
+activate  U
+
+alt 已经创建过实例
+    U <-- S : 返回已有创建的示例
+else 未创建过实例
+    S -> S : 创建实例
+    U <-- S : 返回刚刚创建的示例  
+deactivate U
+end
+
+@enduml
+
+@startuml sigleton-3
+
+actor 用户 as U
+participant Singletion as S
+
+S -> S : 创建实例
+... 等待需要 ...
+U -> S : getInstance() : Singleton
+activate  U
+    U <-- S : 返回已有创建的示例
+deactivate U
+
+@enduml
