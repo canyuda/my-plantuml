@@ -1,0 +1,103 @@
+@startuml prototype-1
+!include common.cuml
+
+Class(Client,"客户端") {
+    - prototype : Prototype
+    + Client()
+    + operation() : void
+}
+
+Interface(Prototype,"抽象原型方法") <<interface>> {
+    + clone() : Prototype
+}
+
+Class(ConcretePrototype1,"原型1") {
+    + clone() : Prototype
+}
+
+Class(ConcretePrototype2,"原型2") {
+    + clone() : Prototype
+}
+
+Client o--right--> Prototype
+Prototype <|.. ConcretePrototype1
+Prototype <|.. ConcretePrototype2
+
+@enduml
+
+
+@startuml prototype-2
+!include common.cuml
+
+Class(PrototypeManager,"原型管理器") {
+    - prototypeMap : Map
+    + PrototypeManager()
+    + getPrototype() : Prototype
+    + addPrototype() : void
+    + removePrototype() : void
+}
+
+Class(Client,"客户端") {
+
+}
+
+Interface(Prototype,"抽象原型方法") <<interface>> {
+    + clone() : Prototype
+    + getName() : String
+    + setName() : void
+}
+
+Class(ConcretePrototype1,"原型1") {
+    - name : String
+    + clone() : Prototype
+}
+
+Class(ConcretePrototype2,"原型2") {
+    - name : String
+    + clone() : Prototype
+}
+
+Client o--right--> Prototype
+Client ..> PrototypeManager
+Prototype <|.. ConcretePrototype1
+Prototype <|.. ConcretePrototype2
+
+@enduml
+
+
+@startuml prototype-3
+
+!include common.cuml
+
+actor 用户 as U
+participant Client as C
+participant Prototype as P
+
+U --> C : 想要获取原型
+U -> C : setPrototype();\noperation();
+C -> P : clone()
+U <-- P : Prototype对象
+
+@enduml
+
+@startuml prototype-4
+
+!include common.cuml
+
+actor 用户 as U
+participant Client as C
+
+participant PrototypeManager as PM
+participant Prototype1 as P1
+participant Prototype2 as P2
+
+P1 -> PM : addPrototype()
+P2 -> PM : addPrototype()
+......
+U --> C : 想要一个原型
+C -> PM : getPrototype(prototypeName)
+PM -> PM : foreach(prototypeMap)
+PM --> C : Prototype对象
+U <-- C : Prototype对象
+
+@enduml
