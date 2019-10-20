@@ -1,0 +1,63 @@
+@startuml command-1
+!include common.cuml
+
+Class(Receiver,"接收者") {
+    + action() : void
+}
+
+Class(Command,"抽象命令接口") <<abstract>> {
+    + execute() : void
+}
+
+Class(ConcreteCommand,"具体命令类") {
+    - state : State
+    + execute() : void
+}
+
+Class(Invoker,"调用者") {
+    + call() : void
+}
+
+Class(Client,"客户端") {
+}
+
+note AS N1
+receiver.action();
+end note
+
+Receiver <-left- ConcreteCommand : receiver
+ConcreteCommand .up.|> Command
+Invoker o-right-> Command
+N1 -up- ConcreteCommand
+Client .right.> Invoker : 2
+Client .right.> ConcreteCommand : 1
+@enduml
+
+
+@startuml command-2
+
+!include common.cuml
+
+participant Client as U
+participant Receiver as R
+participant ConcreteCommand as C
+participant Invoker as I
+
+U --> R : new Recever();
+activate U
+U -> C : new ConcreteCommand(receiver)
+U -> I : new Invoker(command)
+deactivate U
+U --> I : call()
+activate I
+activate U
+I --> C : execute()
+activate C
+C --> R : action()
+activate R
+
+
+
+
+
+@enduml
