@@ -35,9 +35,7 @@ Client .right.> ConcreteCommand : 1
 
 
 @startuml command-2
-
 !include common.cuml
-
 participant Client as U
 participant Receiver as R
 participant ConcreteCommand as C
@@ -55,9 +53,4 @@ I --> C : execute()
 activate C
 C --> R : action()
 activate R
-
-
-
-
-
 @enduml
