@@ -1,8 +1,16 @@
+'类图
 !define Class(name) class name
-
 !define Class(name,desc) class name as "name\ndesc"
-
 !define Interface(name,desc) interface name as "name\ndesc"
 
-
-
+'数据表图
+!define Table(name,desc) class name as "name\ndesc" << (T,#FFFFFF) >>
+!define MongoDB(name,desc) class name as "name\ndesc" << (M,#FFAAAA) >>
+!define primary_key(x) -<b>x</b>
+!define unique(x) <color:green>x</color>
+!define not_null(x) +<u>x</u>
+!define can_null(x) #<u>x</u>
+'数据表图-索引
+!unquoted function index($type, $idx_name, $idx_items="unknown")
+!return $type + $idx_name + " (" + $idx_items + ")"
+!endfunction
