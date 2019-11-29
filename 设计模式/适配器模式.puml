@@ -1,0 +1,67 @@
+@startuml adapter-1
+class Client {
+
+}
+
+interface Adapter {
+    +operation()
+}
+
+class ConcreteAdapter {
+    -adapteee
+    +operation()
+}
+
+class Adaptee {
+    +adaptedOperation()
+}
+
+note "对象适配器模式" as N1
+
+Client .right.> Adapter
+Adapter <|-down- ConcreteAdapter
+Adaptee <-right- ConcreteAdapter
+N1 -right- ConcreteAdapter
+@enduml
+
+@startuml adapter-2
+class Client {
+
+}
+
+interface Adapter {
+    +operation()
+}
+
+class ConcreteAdapter {
+    +operation()
+}
+
+class Adaptee {
+    +adaptedOperation()
+}
+
+note "类适配器模式" as N1
+
+Client -right-> Adapter
+Adapter <|-down- ConcreteAdapter
+Adaptee <|-left- ConcreteAdapter
+N1 -right- ConcreteAdapter
+@enduml
+
+@startuml adapter-3
+
+!include common.cuml
+
+actor 用户 as U
+participant Adaptee as Ae
+participant Adapter as Ar
+
+U --> Ae : 创建\n <<create>>>
+U --> Ar : new Adapter(adaptee)
+U -> Ar : request()
+Ar -> Ae : specificRequest()
+Ar <-- Ae : 返回结果
+U <-- Ar : 适配器返回结果
+
+@enduml
