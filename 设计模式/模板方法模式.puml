@@ -1,0 +1,37 @@
+@startuml template-method-1
+!include ./common.cuml
+
+Class(AbstractClass,"抽象类") << abstract >> {
+    + abstractMethod1() : void abstract
+    + abstractMethod2() : void abstract
+    + specificMethod1() : void
+    + specificMethod2() : void
+    + specificMethod3() : void
+    + mainMethod() : void
+}
+
+Class(ConcreteClassA,"子类A") {
+    + abstractMethod1() : void
+    + abstractMethod2() : void
+}
+
+Class(ConcreteClassB,"子类B") {
+    + abstractMethod1() : void
+    + abstractMethod2() : void
+}
+
+note as N1
+public void mainMethod() {
+    specificMethod1();
+    abstractMethod1();
+    specificMethod2();
+    abstractMethod2();
+    specificMethod3();
+}
+end note
+
+AbstractClass <|.. ConcreteClassA
+AbstractClass <|.. ConcreteClassB
+N1 .. AbstractClass
+
+@enduml
