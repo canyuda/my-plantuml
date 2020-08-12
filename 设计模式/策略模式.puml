@@ -1,0 +1,86 @@
+@startuml strategy-1
+!include common.cuml
+
+Interface(Strategy,"策略的抽象") {
+    + doSomething() : string
+}
+
+Class(ConcreteStrategyA,"策略A") {
+    + doSomething() : string
+}
+
+Class(ConcreteStrategyB,"策略B") {
+    + doSomething() : string
+}
+
+Class(ConcreteStrategyN,"策略N") {
+    + doSomething() : string
+}
+
+Class(Context,"环境") {
+    - strategy : Strategy
+    + setStrategy(strategy : Strategy) : void
+    + doSomething() : Strategy
+}
+
+note as N1
+public string doSomething() {
+    return strategy.doSomething();
+}
+end note
+
+Strategy --left--o Context
+Strategy <|.. ConcreteStrategyA
+Strategy <|.. ConcreteStrategyB
+Strategy <|.. ConcreteStrategyN
+N1 .. Context
+
+@enduml
+
+@startuml strategy-2
+
+!include common.cuml
+
+Interface(Strategy,"策略的抽象") {
+    + doSomething() : string
+}
+
+Class(ConcreteStrategyA,"策略A") {
+    + doSomething() : string
+}
+
+Class(ConcreteStrategyB,"策略B") {
+    + doSomething() : string
+}
+
+Class(ConcreteStrategyN,"策略N") {
+    + doSomething() : string
+}
+
+Class(StrategyFactory,"策略工厂") {
+    - strategyMap : Map<String,Strategy>
+    + put(string : String, strategy : Strategy) : void
+    + get(string : String) : Strategy
+    + doSomething(string) : Strategy
+}
+
+Class(Context,"环境") {
+    - strategyFactory : StrategyFactory
+    + doSomething() : Strategy
+}
+
+note as N1
+public string doSomething(string : String) {
+    Strategy strategy = get(string)
+    return strategy.doSomething();
+}
+end note
+
+Strategy --left--o StrategyFactory
+Context --right--o StrategyFactory
+Strategy <|.. ConcreteStrategyA
+Strategy <|.. ConcreteStrategyB
+Strategy <|.. ConcreteStrategyN
+N1 .. StrategyFactory
+
+@enduml
