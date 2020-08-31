@@ -1,0 +1,44 @@
+@startuml observer-1
+!include common.cuml
+
+Class(AbstractSubject,"抽象主题") << abstract >> {
+    - observers: List<Observer>
+    + add(Observer observer) : void
+    + remove(Observer observer) : void
+    + notifyAllObserver() : void abstract
+}
+
+Class(ConcreteSubject,"具体主题") {
+    + notifyAllObserver() : void
+}
+
+note as N1
+public void notifyAllObserver() {
+    for (Observer observer ： Observers) {
+        observer.response();
+    }
+}
+end note
+
+N1 -- ConcreteSubject
+AbstractSubject <|-- ConcreteSubject
+
+Interface(Observer,"抽象观察者") {
+    + response() : void
+}
+
+Observer --o AbstractSubject
+
+Class(ConcreteObserverA,"具体主题A") {
+    + response() : void
+}
+
+Class(ConcreteObserverB,"具体主题B") {
+    + response() : void
+}
+
+ConcreteObserverA ..|> Observer
+ConcreteObserverB ..|> Observer
+
+
+@enduml
