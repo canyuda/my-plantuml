@@ -16,3 +16,5 @@
 !endfunction
 
 skinparam backgroundColor #DDDDDD
+
+hide empty description
