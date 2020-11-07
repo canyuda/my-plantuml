@@ -1,0 +1,57 @@
+@startuml decorate-1
+!include common.cuml
+
+Interface(Component,"抽象构件") {
+    + operation() : void
+}
+
+Class(ConcreteComponent,"具体构件") {
+    + operation() : void
+}
+
+Class(Decorator,"抽象装饰") {
+    - component : Component
+    + Decorator(Component : Strategy) : void
+    + operation() : void
+}
+
+Class(ConcreteDecoratorA,"具体装饰A") {
+    + operation() : void
+}
+
+Class(ConcreteDecoratorB,"具体装饰B") {
+    + operation() : void
+}
+
+note as N1
+public void operation() {
+    component.operation();
+}
+end note
+
+note as NA
+public void operation() {
+    // todo A自己的处理逻辑a
+    super.operation();
+    // todo A自己的处理逻辑b
+}
+end note
+
+note as NB
+public void operation() {
+    // todo B自己的处理逻辑a
+    super.operation();
+    // todo B自己的处理逻辑b
+}
+end note
+
+ConcreteDecoratorA ..up.. NA
+ConcreteDecoratorB ..up.. NB
+Decorator ... N1
+ConcreteDecoratorA --|> Decorator
+ConcreteDecoratorB --|> Decorator
+Decorator ..|> Component
+ConcreteComponent ..|> Component
+Component --o Decorator
+
+@enduml

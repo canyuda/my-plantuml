@@ -14,3 +14,7 @@
 !unquoted function index($type, $idx_name, $idx_items="unknown")
 !return $type + $idx_name + " (" + $idx_items + ")"
 !endfunction
+
+skinparam backgroundColor #DDDDDD
+
+hide empty description
