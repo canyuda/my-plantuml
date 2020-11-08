@@ -1,0 +1,26 @@
+@startuml chain-1
+!include common.cuml
+
+Class(Handler,"抽象处理者") << abstract >> {
+    - successor: Handler
+    + handleRequest()
+}
+
+Class(ConcreteHandlerA,"具体处理者A") {
+    + handleRequest()
+}
+
+Class(ConcreteHandlerB,"具体处理者B") {
+    + handleRequest()
+}
+
+Class(Client,"客户端") {
+}
+
+
+Client .right.> Handler
+Handler o--> Handler : successor
+Handler <|-- ConcreteHandlerA
+Handler <|-- ConcreteHandlerB
+
+@enduml
