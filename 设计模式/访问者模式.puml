@@ -1,0 +1,64 @@
+@startuml visitor-1
+!include common.cuml
+
+Class(Vistor,"抽象访问者") << abstract >> {
+    + visitConcreteElementA(ConcreteElementA elementA)
+    + visitConcreteElementB(ConcreteElementB elementB)
+}
+
+Class(ConcreteVistorA,"具体访问者A") {
+    + visitConcreteElementA(ConcreteElementA elementA)
+    + visitConcreteElementB(ConcreteElementB elementB)
+}
+
+Class(ConcreteVistorB,"具体访问者B") {
+    + visitConcreteElementA(ConcreteElementA elementA)
+    + visitConcreteElementB(ConcreteElementB elementB)
+}
+
+Interface(Element,"抽象元素") {
+    + accept(Vistor vistor) : void
+}
+
+
+Class(ConcreteElementA,"具体元素A") {
+    + accept(Vistor vistor) : void
+    + operationA() : void
+}
+
+Class(ConcreteElementB,"具体元素B") {
+    + accept(Vistor vistor) : void
+    + operationB() : void
+}
+
+Class(ObjectStructure,"对象结构") {
+}
+
+Class(Client,"客户端") {
+}
+
+note as NA
+public void accept(Vistor vistor) {
+    vistor.visitConcreteElementA(this)
+}
+end note
+
+note as NB
+public void accept(Vistor vistor) {
+    vistor.visitConcreteElementB(this)
+}
+end note
+
+NA -- ConcreteElementA
+NB -- ConcreteElementB
+
+
+Vistor <|-- ConcreteVistorA
+Vistor <|-- ConcreteVistorB
+Vistor <|.. Client
+Client ..> ObjectStructure
+ObjectStructure --> Element
+Element <|.. ConcreteElementA
+Element <|.. ConcreteElementB
+
+@enduml
