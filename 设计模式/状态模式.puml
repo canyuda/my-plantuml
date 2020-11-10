@@ -1,0 +1,37 @@
+@startuml state-1
+!include common.cuml
+
+Interface(State,"抽象状态") {
+    + handle() : void
+}
+
+Class(ConcreteStateA,"具体状态A") {
+    + handle() : void
+}
+
+Class(ConcreteStateB,"具体状态B") {
+    + handle() : void
+}
+
+Class(Context,"环境") {
+    - state : State
+    + request() : void
+    + setState(State state) : void
+}
+
+note as N1
+public void request() {
+    // todo 自己的处理逻辑a
+    state.handle();
+    // todo 自己的处理逻辑b
+}
+end note
+
+N1 ... Context
+
+ConcreteStateA --|> State
+ConcreteStateB --|> State
+
+State <--o Context
+
+@enduml
