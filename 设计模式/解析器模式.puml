@@ -1,0 +1,30 @@
+@@startuml interpreter-1
+!include common.cuml
+
+Class(Context,"环境类") {
+}
+
+Class(AbstractExpression,"抽象表达式") {
+    + interpret(Context ctx) : void
+}
+
+Class(TerminalExpression,"终结符表达式") {
+    + interpret(Context ctx) : void
+}
+
+Class(NonterminalExpression,"非终结符表达式") {
+    + interpret(Context ctx) : void
+}
+
+Class(Client,"客户端") {
+}
+
+Client .right.> AbstractExpression
+Client .right.> Context
+AbstractExpression ..> Context
+TerminalExpression -up-|> AbstractExpression
+NonterminalExpression -up-|> AbstractExpression
+NonterminalExpression o--> AbstractExpression
+
+
+@@enduml
