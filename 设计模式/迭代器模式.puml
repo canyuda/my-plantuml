@@ -1,0 +1,31 @@
+@@startuml iterator-1
+!include common.cuml
+
+Interface(Iterator,"抽象迭代器") {
+    + first()
+    + next()
+    + hasNext()
+    + currentItem()
+}
+
+Class(ConcreteIterator,"具体迭代器") {
+    + first()
+    + next()
+    + hasNext()
+    + currentItem()
+}
+
+Class(Aggregate,"抽象聚合类") <<abstract>> {
+    + createIterator() : Iterator
+}
+
+Class(ConcreteAggregate,"具体聚合类") {
+    + createIterator() : Iterator
+}
+
+Aggregate <|.. ConcreteAggregate
+ConcreteAggregate .left.> ConcreteIterator
+ConcreteAggregate <-right- ConcreteIterator : aggregate
+Iterator <|.. ConcreteIterator
+
+@@enduml
