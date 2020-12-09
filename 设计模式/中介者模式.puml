@@ -1,0 +1,26 @@
+@@startuml mediator-1
+!include common.cuml
+
+Class(Mediator,"Mediator") <<abstract>> {
+}
+
+Class(ConcreteMediator,"具体中介者") {
+}
+
+Class(Colleague,"抽象同事类") <<abstract>> {
+}
+
+Class(ConcreteColleagueA,"具体同事类A") {
+}
+
+Class(ConcreteColleagueB,"具体同事类B") {
+}
+
+Mediator <-left- Colleague : mediator
+Colleague <|-- ConcreteColleagueA
+Colleague <|-- ConcreteColleagueB
+ConcreteMediator --> ConcreteColleagueA
+ConcreteMediator --> ConcreteColleagueB
+ConcreteMediator -up-|> Mediator
+
+@@enduml
